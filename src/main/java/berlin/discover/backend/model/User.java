@@ -1,71 +1,93 @@
 package berlin.discover.backend.model;
 
-import java.io.Serializable;
-import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-/**
- * The persistent class for the user database table.
- *
- */
 @Entity
-@NoArgsConstructor
-@Getter
-@Setter
-public class User implements Serializable {
-
-    /**
-     *
-     */
-    private static final long serialVersionUID = 65981149772133526L;
+@Table(name = "users",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = "username"),
+                @UniqueConstraint(columnNames = "email")
+        })
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "USER_ID")
     private Long id;
 
-    @Column(name = "PROVIDER_USER_ID")
-    private String providerUserId;
+    @NotBlank
+    @Size(max = 20)
+    private String username;
 
+    @NotBlank
+    @Size(max = 50)
+    @Email
     private String email;
 
-    @Column(name = "enabled", columnDefinition = "BIT", length = 1)
-    private boolean enabled;
-
-    @Column(name = "DISPLAY_NAME")
-    private String displayName;
-
-    @Column(name = "created_date", nullable = false, updatable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    protected Date createdDate;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    protected Date modifiedDate;
-
+    @NotBlank
+    @Size(max = 120)
     private String password;
 
-    private String provider;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
 
-    // bi-directional many-to-many association to Role
-    @JsonIgnore
-    @ManyToMany
-    @JoinTable(name = "user_role", joinColumns = { @JoinColumn(name = "USER_ID") }, inverseJoinColumns = { @JoinColumn(name = "ROLE_ID") })
-    private Set<Role> roles;
+    public User() {
+    }
+
+    public User(String username, String email, String password) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+    public void addRole(Role role) {
+        this.roles.add(role);
+    }
 }
