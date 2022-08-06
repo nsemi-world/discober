@@ -1,0 +1,41 @@
+[
+    {
+        "id":1,
+        "username":"zuacaldeira",
+        "email":"zuacaldeira@gmail.com",
+        "password":"$2a$10$4rb6LFno/pRfVHq472fsh.cH3CPE9iJPHq1aNIeaKP1xbqKsHx5l6",
+        "name":"Alexandre Zua Caldeira",
+        "roles":[
+            {
+                "id":1,
+                "name":"ROLE_ADMIN"
+            }
+        ]
+    },
+    {
+        "id":2,
+        "username":"elisacsa",
+        "email":"elisacsa@gmail.com",
+        "password":"$2a$10$U1CM4Kx0nsKUZ/RkCQCnFOvcbQnGYFkPF35uqfstwmcmV5M3Wugf.",
+        "name":"Elisa Sá Zua Caldeira",
+        "roles":[
+            {
+                "id":2,
+                "name":"ROLE_MODERATOR"
+            }
+        ]
+    },
+    {
+        "id":3,
+        "username":"miajanezua",
+        "email":"miajanezua@gmail.com",
+        "password":"$2a$10$QsxwLs1DslXmUMO0qUfy6.XhLwZfWski2bpRWZ7AhIz.S/Hi48Vba",
+        "name":"Mia Jane Zua",
+        "roles":[
+            {
+                "id":3,
+                "name":"ROLE_USER"
+            }
+        ]
+    }
+]
