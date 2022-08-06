@@ -3,44 +3,42 @@ package berlin.discover.backend.service;
 import berlin.discover.backend.model.ERole;
 import berlin.discover.backend.model.Role;
 import berlin.discover.backend.model.User;
-import berlin.discover.backend.repo.RoleRepository;
-import berlin.discover.backend.repo.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class DBAdminServiceImpl implements DBAdminService {
 
-    @Autowired private UserRepository userRepository;
-    @Autowired private RoleRepository roleRepository;
+    private final UserService userService;
 
 
     @Override
     public void seedRoles() {
-        Role roleUser = new Role(ERole.ROLE_USER);
-        Role roleModerator = new Role(ERole.ROLE_MODERATOR);
-        Role roleAdmin = new Role(ERole.ROLE_ADMIN);
-        this.roleRepository.save(roleUser);
-        this.roleRepository.save(roleModerator);
-        this.roleRepository.save(roleAdmin);
+        userService.saveRole(new Role(ERole.ROLE_ADMIN));
+        userService.saveRole(new Role(ERole.ROLE_MODERATOR));
+        userService.saveRole(new Role(ERole.ROLE_USER));
     }
 
     @Override
     public void seedUsers() {
-        this.addUser("Zua Caldeira", "zuacaldeira@gmail.com", "Password:ZuaCaldeira", ERole.ROLE_ADMIN);
-        this.addUser("Elisa Sá", "elisacsa@gmail.com", "Password:ElisaSa", ERole.ROLE_MODERATOR);
+        User zuaCaldeira = new User("zuacaldeira", "zuacaldeira@gmail.com", "Password:ZuaCaldeira", "Alexandre Zua Caldeira");
+        userService.saveUser(zuaCaldeira);
+        userService.addRoleToUser("zuacaldeira", ERole.ROLE_ADMIN.name());
+
+        User elisaCSa = new User("elisacsa", "elisacsa@gmail.com", "Password:ElisaCaldeira", "Elisa Sá Zua Caldeira");
+        userService.saveUser(elisaCSa);
+        userService.addRoleToUser("elisacsa", ERole.ROLE_MODERATOR.name());
+
+        User miaJaneZua = new User("miajanezua", "miajanezua@gmail.com", "Password:MiaJaneZua", "Mia Jane Zua");
+        userService.saveUser(miaJaneZua);
+        userService.addRoleToUser("miajanezua", ERole.ROLE_USER.name());
     }
 
-    private void addUser(String name, String email, String password, ERole eRole) {
-        Role role = roleRepository.findByName(eRole).get();
-        User user = new User(name, email, password);
-        user.addRole(role);
-        userRepository.save(user);
-    }
 
-    public List<User> getAllUsers() {
-        return this.userRepository.findAll();
+    public List<User> getUsers() {
+        return this.userService.getUsers();
     }
 }
