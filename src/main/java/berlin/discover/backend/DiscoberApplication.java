@@ -20,6 +20,8 @@ public class DiscoberApplication  extends SpringBootServletInitializer {
 		return new BCryptPasswordEncoder();
 	}
 
+
+
 	/*
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {

@@ -84,4 +84,11 @@ public class UserServiceImpl implements UserService {
         user.addRole(role);
     }
 
+    @Override
+    public User getUser(String username) {
+        return userRepository.findByUsername(username).orElseThrow(
+                () -> new UsernameNotFoundException("User not found: " + username)
+        );
+    }
+
 }
