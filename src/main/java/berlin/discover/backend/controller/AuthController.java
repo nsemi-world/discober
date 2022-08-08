@@ -21,6 +21,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,7 +32,6 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/auth")
 @Slf4j
@@ -41,24 +42,29 @@ public class AuthController {
 
 
 
-    @PostMapping("/login")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
-        System.out.println("****************************************************************");
-        System.out.println(loginRequest);
-        System.out.println("****************************************************************");
-        return ResponseEntity.ok(new MessageResponse("User logged in successfully!"));
-
-    }
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+    @CrossOrigin
+    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) throws URISyntaxException {
+        log.info("Will try to register user {}", signUpRequest);
+
+        User user = new User();
+        user.setName(signUpRequest.getName());
+        user.setUsername(signUpRequest.getUsername());
+        user.setPassword(signUpRequest.getPassword());
+        user.setEmail(signUpRequest.getEmail());
+
+        userService.saveUser(user);
+        return ResponseEntity.ok().body(new MessageResponse("User registered successfully!"));
     }
+
     @PostMapping("/logout")
     public ResponseEntity<?> logoutUser() {
         return ResponseEntity.ok(new MessageResponse("User logged out successfully!"));
     }
 
+
     @GetMapping("/token/refresh")
+    @CrossOrigin
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
             String authorizationHeader = request.getHeader(AUTHORIZATION);
             log.debug("Authorization header = {}", authorizationHeader);

@@ -5,8 +5,9 @@ import java.util.Set;
 public class SignupRequest {
     private String username;
     private String email;
-    private CharSequence password;
+    private String password;
     private Set<String> role;
+    private String name;
 
 
     public String getEmail() {
@@ -25,11 +26,11 @@ public class SignupRequest {
         this.username = username;
     }
 
-    public CharSequence getPassword() {
+    public String getPassword() {
         return password;
     }
 
-    public void setPassword(CharSequence password) {
+    public void setPassword(String password) {
         this.password = password;
     }
 
@@ -39,5 +40,24 @@ public class SignupRequest {
 
     public void setRole(Set<String> role) {
         this.role = role;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "SignupRequest{" +
+                "username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", password=" + password +
+                ", role=" + role +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

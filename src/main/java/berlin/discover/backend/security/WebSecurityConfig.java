@@ -34,11 +34,12 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.cors();
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.formLogin();
-        http.authorizeRequests().antMatchers("/login/**", "/api/auth/token/refresh/**").permitAll();
+        http.authorizeRequests().antMatchers("/login/**", "/api/auth/**").permitAll();
         http.authorizeRequests().antMatchers(GET, "/api/users/**").hasAuthority("ROLE_ADMIN");
         http.authorizeRequests().antMatchers(GET, "/api/admin/**").hasAuthority("ROLE_ADMIN");
         http.authorizeRequests().antMatchers(POST, "/api/images/save/**").hasAuthority("ROLE_USER");
