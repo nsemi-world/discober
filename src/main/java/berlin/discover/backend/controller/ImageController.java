@@ -2,17 +2,20 @@ package berlin.discover.backend.controller;
 
 import berlin.discover.backend.model.Image;
 import berlin.discover.backend.service.ImageService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping(path = "api/v1/images")
+@RequestMapping(path = "api/images")
+@Slf4j
 public class ImageController {
 
     @Autowired private ImageService imageService;
@@ -28,6 +31,13 @@ public class ImageController {
     @GetMapping
     public ResponseEntity<List<Image>> getImages(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int limit) {
         List<Image> images = new ArrayList<>();
+        return ResponseEntity.ok(images);
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<Image>> getImagesFromUser(@PathVariable Long userId) {
+        log.info("Get Images from User {}", userId);
+        List<Image> images = imageService.getImagesFromUser(userId);
         return ResponseEntity.ok(images);
     }
 

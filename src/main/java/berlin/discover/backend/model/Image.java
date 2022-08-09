@@ -1,9 +1,6 @@
 package berlin.discover.backend.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
@@ -34,6 +31,7 @@ public class Image {
     @Column(name="updated_at")
     private LocalDateTime updateAt;
 
+    private Long userId;
 
 
     public Long getId() {
@@ -90,5 +88,13 @@ public class Image {
 
     public void setDataUrl(byte[] dataUrl) {
         this.dataUrl = dataUrl;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }

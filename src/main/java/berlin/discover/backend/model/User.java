@@ -43,6 +43,12 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
+    @OneToMany(fetch = FetchType.EAGER )
+    @JoinTable(name = "user_images",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "image_id"))
+    private Set<Image> images = new HashSet<>();
+
     public User() {
     }
 
@@ -103,5 +109,14 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+
+    public Set<Image> getImages() {
+        return images;
+    }
+
+    public void setImages(Set<Image> images) {
+        this.images = images;
     }
 }
