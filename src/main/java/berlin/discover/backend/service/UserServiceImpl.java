@@ -82,6 +82,7 @@ public class UserServiceImpl implements UserService {
         );
 
         user.addRole(role);
+        userRepository.save(user);
     }
 
     @Override
